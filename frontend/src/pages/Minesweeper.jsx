@@ -2,13 +2,37 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom'
 
 export default function Minesweeper() {
+    /*const location = useLocation()
+    const { props } = location.state
+    const difficulty = props*/
+
+    let WIDTH = 9;
+    let HEIGHT = 9;
+    let BOMBS = 10;
+
+    /*console.log(props);
+    if (difficulty == "easy") {        
+        WIDTH = 9;
+        HEIGHT = 9;
+        BOMBS = 10;
+    } else if (difficulty == "hard") {
+        WIDTH = 30;
+        HEIGHT = 16;
+        BOMBS = 99;
+    } else {
+        WIDTH = 16;
+        HEIGHT = 16;
+        BOMBS = 40;
+    }*/
+    
     const [grid, setGrid] = useState(() => Array(HEIGHT).fill(0).map(() => Array(WIDTH).fill(0)));
     const [started, setStarted] = useState(false);
     const [ended, setEnded] = useState(false);
     const [time, setTime] = useState(0);
+    const [flags, setFlags] = useState(0);
     const [timerRunning, setTimerRunning] = useState(false);
 
-
+    
     useEffect(() => {
         setGrid(Array(HEIGHT).fill(0).map(() => Array(WIDTH).fill(0)));
     }, []);
@@ -150,17 +174,21 @@ export default function Minesweeper() {
         <>
             {gameOverOverlay}
 
-            <div className="text-center">
+            <div className="text-center" onContextMenu={(e)=> e.preventDefault()}>
                 <h1>Minesweeper</h1>
                 <h2 id="status" className="mb-4"></h2>
-
-                <div className="minesweeper-timer">
-                    Time: {time}s
+                <div>
+                    <div>
+                        Bombs left: {10 - flags}
+                    </div>
+                    <div className="minesweeper-timer">
+                        Time: {time}s
+                    </div>
                 </div>
 
 
 
-                <div id="board" className="minesweeper-board mx-auto" style={{ width: WIDTH * 75 }}>
+                <div id="board" className="minesweeper-board mx-auto" style={{ width: WIDTH * 50 }}>
                     {/* render rows top-down; clicking any cell triggers drop in its column */}
                     {grid.map((row, rIdx) => (
                         <div className="minesweeper-row" key={rIdx} style={{ display: "grid", gridTemplateColumns: `repeat(${WIDTH}, 1fr)` }}>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../config.js";
 import "../styles.css";
 
@@ -7,6 +8,7 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -31,7 +33,8 @@ export default function Login() {
 
             if (res.ok && data?.token) {
                 localStorage.setItem("token", data.token);
-                setMessage("Login successful ✔");
+                setMessage("Login successful! Redirecting...");
+                navigate("/");
             } else {
                 setMessage(data?.detail || "Login failed.");
             }
