@@ -41,16 +41,6 @@ app.listen(PORT, HOST, () => {
 const SECRET_KEY = "SUPER_SECRET_KEY_CHANGE_ME"; // use env var in real apps
 const ACCESS_TOKEN_EXPIRE_MINUTES = 30; // set 1 for demos if you want
 
-// ======== SIMPLE USER "DB" (in-memory for demo) ========
-// key: email, value: hashed password
-const fakeUsersDb = {};
-
-// Helper: save user
-function saveUserToDb(email, hashedPw) {
-    fakeUsersDb[email] = hashedPw;
-    console.log("DB state:", fakeUsersDb); // debugging
-}
-
 // Helper: get user
 function getUserByEmail(email) {
     const hashedPw = fakeUsersDb[email];
@@ -88,11 +78,12 @@ app.post("/signup", async (req, res) => {
         
         // Hash password with bcrypt
         const hashedPw = await bcrypt.hash(password, 10); // 10 = salt rounds
-
+        const time = 0;
         // Create new Document to POST
         const user = {
             email,
             hashedPw,
+            time,
         };
         
         // Insert new document into MongoDB
@@ -140,7 +131,6 @@ app.post("/login", async (req, res) => {
         );
 
         console.log("Token:", token);
-        console.log("DB:", fakeUsersDb);
 
         return res.json({ token }); // shape { "token": "<JWT>" }
     } catch (err) {
@@ -191,3 +181,30 @@ app.get("/protected", authenticateToken, (req, res) => {
 return res.json({msg: `Hello ${req.userEmail}, this is protected data!`});
 });
 
+app.post("/minesweeper", async (req, res) => {
+    try {     
+        const { time } = req.body;
+
+        await client.connect();
+        console.log("Node connected successfully to GET MongoDB");
+
+    } catch (err) {
+        console.error("Error in /minesweeper:", err);
+        return res.status(500).json({ detail: "Internal server error" });
+    }
+
+
+});
+
+app.get("/leaderboard", async (req, res) => {
+    try {
+        
+        //need to get user from token somehow
+        //get their time value and post it into Leaderboard
+    } catch (err) {
+        console.error("Error in /minesweeper:", err);
+        return res.status(500).json({ detail: "Internal server error" });
+    }
+
+
+});

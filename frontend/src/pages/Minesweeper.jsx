@@ -168,6 +168,20 @@ export default function Minesweeper() {
         </div>
     );
 
+    // Game won screen
+    const gameWonOverlay = (
+        <div id="game-over-overlay" className="game-over-overlay">
+            <div className="game-over-card">
+                <div className="game-over-title">Game Won!</div>
+                <div className="game-over-title">Time: {time}</div>
+
+                <button className="game-over-button" onClick={playAgain}>
+                    Play Again
+                </button>
+            </div>
+        </div>
+    )
+
 
 
     return (
