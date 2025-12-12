@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-
-const WIDTH = 9;
-const HEIGHT = 9;
-const BOMBS = 10;
+import { useLocation } from 'react-router-dom'
 
 export default function Minesweeper() {
     const [grid, setGrid] = useState(() => Array(HEIGHT).fill(0).map(() => Array(WIDTH).fill(0)));
@@ -126,8 +123,10 @@ export default function Minesweeper() {
         let cell = document.getElementById((row + 1) + (col * 9));
         console.log(cell.innerHTML);
         if (cell.innerHTML === "X") {
+            setFlags(flags-1)
             cell.innerHTML = "";
         } else if (cell.innerHTML === "") {
+            setFlags(flags+1)
             cell.innerHTML = "X"
         }
     }

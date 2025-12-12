@@ -22,8 +22,6 @@ export default function App() {
                 {/* public routes */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
-                <Route path="/minesweeper-home" element={<MinesweeperHome />} />
-                <Route path="/minesweeper" element={<Minesweeper />} />
 
                 {/* protected routes */}
                 <Route
@@ -51,6 +49,23 @@ export default function App() {
                             <Connect4 />
                         </ProtectedRoute>
                     }
+                />
+                
+                <Route 
+                    path="/minesweeper-home" 
+                    element={
+                        <ProtectedRoute>
+                            <MinesweeperHome />
+                        </ProtectedRoute>
+                    } 
+                />
+                <Route 
+                    path="/minesweeper" 
+                    element={
+                        <ProtectedRoute>
+                            <Minesweeper />
+                        </ProtectedRoute>
+                    } 
                 />
             </Routes>
         </>
