@@ -29,26 +29,6 @@ export default function Minesweeper() {
                 bombCount--;
             }
         }
-    }
-
-    function flipSquare(row, col) {
-    if (!started || ended) return;
-    // find bottom-most empty row in this column
-      if (grid[row][col] === 0) {
-        grid[row][col] = 2;
-        let cell = document.getElementById((row+1) + (col*9));
-        let nearbyBombs = 0;
-
-        for(let h = 0; h <= 2; h++) { 
-            for(let w = 0; w <= 2; w++) {
-                if(!(row-w-1 < 0 || row-w-1 > WIDTH || col-h-1 < 0 || col-h-1 > HEIGHT)) {
-                    if (grid[row-w-1][col-h-1] == 1) {
-                        nearbyBombs += 1;
-                    }
-                }
-            }
-        }
-        cell.innerHTML = nearbyBombs;
 
         for(let h = 0; h < HEIGHT; h++) { 
             let consoleString = "";
@@ -57,15 +37,67 @@ export default function Minesweeper() {
             }
             console.log(consoleString + "\n");
         }
-        console.log(" ")
+        console.log(" ");
+    }
 
-      } else if (grid[r][col] === 1) {
+    function flipSquare(row, col) {
+    if (!started || ended) return;
+    
+        let cell = document.getElementById((row+1) + (col*9));
+
+        if (grid[row][col] === 0) {
+        grid[row][col] = 2;
+        let nearbyBombs = 0;
+
+        for(let h = 0; h <= 2; h++) { 
+            for(let w = 0; w <= 2; w++) {
+                if(!(row+w-1 < 0 || row+w-1 >= WIDTH || col+h-1 < 0 || col+h-1 > HEIGHT)) {
+                    console.log(row+w-1);
+                    if (grid[row+w-1][col+h-1] == 1) {
+                        nearbyBombs += 1;
+                    }
+                }
+            }
+        }
+        cell.innerHTML = nearbyBombs;
+        cell.style.backgroundColor = "#ccc";
+        if(nearbyBombs === 0) {
+            for(let h = 0; h <= 2; h++) { 
+                for(let w = 0; w <= 2; w++) {
+                    if(!(row+w-1 < 0 || row+w-1 >= WIDTH || col+h-1 < 0 || col+h-1 > HEIGHT)) {
+                        flipSquare(row+w-1,col+h-1);
+                    }
+                }
+            }
+        }
+
+        for(let h = 0; h < HEIGHT; h++) { 
+            let consoleString = "";
+            for(let w = 0; w < WIDTH; w++) {
+                consoleString += grid[w][h] + " ";
+            }
+            console.log(consoleString + "\n");
+        }
+        console.log(" ");
+
+      } else if (grid[row][col] === 1) {
+        cell.style.backgroundColor = "#C00";
         setEnded(true);
         setStarted(false);
       }
-    // column full — ignore
-  }
-      return (
+    }
+
+    function flag(row, col) {
+        let cell = document.getElementById((row+1) + (col*9));
+        console.log(cell.innerHTML);
+        if (cell.innerHTML === "X") {
+            cell.innerHTML = "";
+        } else if (cell.innerHTML === "") {
+            cell.innerHTML = "X"
+        }
+    }
+
+    return (
     <div className="text-center">
       <h1>Minesweeper</h1>
       <h2 id="status" className="mb-4"></h2>
@@ -80,6 +112,7 @@ export default function Minesweeper() {
                 className="minesweeper-cell"
                 id={(cIdx+1) + (rIdx*9)}
                 onClick={() => flipSquare(cIdx, rIdx)}
+                onContextMenu={() => flag(cIdx, rIdx)}
                 role="button"
               >
               </div>
