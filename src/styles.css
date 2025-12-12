@@ -25,6 +25,31 @@
   pointer-events: none;
 }
 
+/* Minesweeper */
+.minesweeper-board {
+  display: inline-block;
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid black;
+}
+.minesweeper-row {
+  display: grid;
+}
+.minesweeper-cell {
+  width: 70px;
+  height: 70px;
+  border: 1px solid black;
+  border-radius: 4px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor: pointer;
+  padding: 5px;
+}
+.minesweeper-cell:hover {
+  filter: brightness(1.1);
+}
+
 /* Connect4 */
 .connect4-board {
   display: inline-block;

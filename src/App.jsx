@@ -1,11 +1,12 @@
 import { Routes, Route } from "react-router-dom";
-import Login from "./pages/login";
+import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import TicTacToe from "./pages/TicTacToe";
 import Connect4 from "./pages/Connect4";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
+import Minesweeper from "./pages/Minesweeper";
 
 export default function App() {
     return (
@@ -16,6 +17,7 @@ export default function App() {
                 {/* public routes */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
+                <Route path="minesweeper" element={<Minesweeper />} />
 
                 {/* protected routes */}
                 <Route
