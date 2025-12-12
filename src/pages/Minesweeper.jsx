@@ -36,12 +36,15 @@ export default function Minesweeper() {
     // find bottom-most empty row in this column
       if (grid[row][col] === 0) {
         grid[row][col] = 2;
-        let cell = document.getElementById(row * col);
+        let cell = document.getElementById((row+1) + (col*9));
         let nearbyBombs = 0;
+
         for(let h = 0; h <= 2; h++) { 
             for(let w = 0; w <= 2; w++) {
-                if (grid[row-w-1][col-h-1] == 1) {
-                    nearbyBombs += 1;
+                if(!(row-w-1 < 0 || row-w-1 > WIDTH || col-h-1 < 0 || col-h-1 > HEIGHT)) {
+                    if (grid[row-w-1][col-h-1] == 1) {
+                        nearbyBombs += 1;
+                    }
                 }
             }
         }
@@ -54,7 +57,8 @@ export default function Minesweeper() {
             }
             console.log(consoleString + "\n");
         }
-        
+        console.log(" ")
+
       } else if (grid[r][col] === 1) {
         setEnded(true);
         setStarted(false);
@@ -74,7 +78,7 @@ export default function Minesweeper() {
               <div
                 key={cIdx}
                 className="minesweeper-cell"
-                id={rIdx * cIdx}
+                id={(cIdx+1) + (rIdx*9)}
                 onClick={() => flipSquare(cIdx, rIdx)}
                 role="button"
               >
