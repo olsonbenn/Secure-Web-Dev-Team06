@@ -204,3 +204,62 @@
         transform: translateY(0);
     }
 }
+/* GAME OVER OVERLAY */
+.game-over-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.92); /* same dark slate tone */
+  display: none; /* toggled by React */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.25s ease-out;
+}
+
+/* Center card like auth-card */
+.game-over-card {
+  background: #1e293b;
+  padding: 40px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 350px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* Title */
+.game-over-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* Button (reuse visual style from .auth-button) */
+.game-over-button {
+  padding: 12px 24px;
+  background: #3b82f6;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  color: white;
+  transition: 0.2s;
+}
+
+.game-over-button:hover {
+  background: #2563eb;
+}
+
+/* Minesweeper Timer */
+.minesweeper-timer {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #60a5fa;         /* same light blue as your link color */
+  margin-bottom: 10px;
+  text-shadow: 0 0 6px rgba(96,165,250,0.4);
+  animation: fadeIn 0.3s ease-out;
+}
