@@ -68,22 +68,42 @@ app.post("/signup", async (req, res) => {
             return res.status(400).json({ detail: "email and password are required" });
         }
 
-        // Check if user exists
-        if (fakeUsersDb[email]) {
-            console.log(`User ${email} already exists`);
-            return res.status(400).json({ detail: "User already exists" });
+        // Connect to MongoDB
+        await client.connect();
+        console.log("Node connected successfully to POST MongoDB");
+
+        // Reference collection
+        const contactsCollection = db.collection(COLLECTION);
+
+        // Check if contact already exists
+        const existingContact = await contactsCollection.findOne({
+            email: email,
+        });
+
+        if (existingContact) {
+            return res.status(409).json({
+                message: `Contact with email ${email} already exists.`,
+            });
         }
-
-        console.log("New user:", email, password); // debugging (don't do this in prod)
-
+        
         // Hash password with bcrypt
         const hashedPw = await bcrypt.hash(password, 10); // 10 = salt rounds
-        saveUserToDb(email, hashedPw);
+
+        // Create new Document to POST
+        const user = {
+            email,
+            hashedPw,
+        };
+        
+        // Insert new document into MongoDB
+        const result = await contactsCollection.insertOne(user);
 
         return res.json({ msg: "signup ok" });
     } catch (err) {
         console.error("Error in /signup:", err);
         return res.status(500).json({ detail: "Internal server error" });
+    } finally {
+        await client.close();
     }
 });
 
@@ -95,19 +115,26 @@ app.post("/login", async (req, res) => {
             return res.status(400).json({ detail: "email and password are required" });
         }
 
-        const dbUser = getUserByEmail(email);
-        if (!dbUser) {
+        await client.connect();
+        console.log("Node connected successfully to GET MongoDB");
+        const query = {email: email};
+
+        const results = await db
+            .collection(COLLECTION)
+            .findOne(query)
+
+        if (!results) {
             return res.status(401).json({ detail: "Invalid credentials-User" });
         }
-
-        const validPassword = await bcrypt.compare(password, dbUser.hashedPassword);
+        const userPassword = results.hashedPw
+        const validPassword = await bcrypt.compare(password, userPassword);
         if (!validPassword) {
             return res.status(401).json({ detail: "Invalid credentials-Password" });
         }
 
         // sub = subject (usually the user id or email)
         const token = jwt.sign(
-            { sub: dbUser.email },
+            { sub: email },
             SECRET_KEY,
             { expiresIn: `${ACCESS_TOKEN_EXPIRE_MINUTES}m` } // e.g. "30m"
         );
@@ -164,25 +191,3 @@ app.get("/protected", authenticateToken, (req, res) => {
 return res.json({msg: `Hello ${req.userEmail}, this is protected data!`});
 });
 
-// ======== 5) GET ALL ========
-app.get("/contacts", async(req, res) => {
-    try{
-        await client.connect();
-        console.log("Node connected successfully to GET MongoDB");
-        const query = {};
-
-        const results = await db
-            .collection(COLLECTION)
-            .find(query)
-            .limit(100)
-            .toArray();
-        console.log(results);
-
-        res.status(200);
-        res.json(results);
-    } catch(error){
-        console.error("Error in GET /contacts:", error);
-        res.status(500);
-        res.json({message:"Failed to retrieve contacts"+error.message});
-    }
-});

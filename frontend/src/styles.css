@@ -36,8 +36,8 @@
   display: grid;
 }
 .minesweeper-cell {
-  width: 70px;
-  height: 70px;
+  width: 45px;
+  height: 45px;
   border: 1px solid black;
   border-radius: 4px;
   display:flex;
@@ -48,6 +48,14 @@
 }
 .minesweeper-cell:hover {
   filter: brightness(1.1);
+}
+.minesweeper-timer {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #60a5fa;
+  margin-bottom: 10px;
+  text-shadow: 0 0 6px rgba(96,165,250,0.4);
+  animation: fadeIn 0.3s ease-out;
 }
 
 /* Connect4 */
@@ -254,12 +262,6 @@
   background: #2563eb;
 }
 
-/* Minesweeper Timer */
-.minesweeper-timer {
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: #60a5fa;         /* same light blue as your link color */
-  margin-bottom: 10px;
-  text-shadow: 0 0 6px rgba(96,165,250,0.4);
-  animation: fadeIn 0.3s ease-out;
+.button_link {
+  color: #FFF;
 }

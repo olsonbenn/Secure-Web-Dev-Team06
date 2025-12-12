@@ -17,6 +17,7 @@ export default function Navbar() {
                     <Link to="/">Home</Link>
                     <Link to="/tictactoe">Tic Tac Toe</Link>
                     <Link to="/connect4">Connect 4</Link>
+                    <Link to="/minesweeper">Minesweeper</Link>
                     <button onClick={logout}>Logout</button>
                 </>
             )}
