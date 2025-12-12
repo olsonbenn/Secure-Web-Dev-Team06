@@ -4,7 +4,7 @@ const WIDTH = 9;
 const HEIGHT = 9;
 const BOMBS = 10;
 
-export default function Minesweeper() {
+export default function Minesweeper({difficulty}) {
     const [grid, setGrid] = useState(() => Array(HEIGHT).fill(0).map(()=>Array(WIDTH).fill(0)));
     const [started, setStarted] = useState(false);
     const [ended, setEnded] = useState(false);
